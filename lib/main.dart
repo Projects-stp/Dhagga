@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Threads Clone',
       theme: theme,
       getPages: Routes.pages,
-      initialRoute: RouteNames.home,
+      initialRoute: RouteNames.login,
+      defaultTransition: Transition.noTransition,
     );
   }
 }
