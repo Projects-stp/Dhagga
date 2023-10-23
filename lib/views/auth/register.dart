@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 import 'package:threads_clone/routes/routes_name.dart';
 import 'package:threads_clone/widgets/auth_input.dart';
@@ -22,6 +24,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
       TextEditingController(text: "");
   final TextEditingController cPasswordController =
       TextEditingController(text: "");
+
+  //?? submit method ->
+  void signUp() {
+    if (_form.currentState!.validate()) {
+      // controller.register(
+      //   nameController.text,
+      //   emailController.text,
+      //   passwordController.text,
+      // );
+      if (kDebugMode) {
+        print('All good');
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    cPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +86,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: "Enter your Name",
                     label: "Name",
                     controller: nameController,
+                    callback: ValidationBuilder()
+                        .required()
+                        .minLength(3)
+                        .maxLength(50)
+                        .build(),
                     isPasswordField: true,
                   ),
                   const SizedBox(height: 20),
@@ -68,13 +98,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: "Enter your email",
                     label: "Email",
                     controller: emailController,
-                    // callback: ValidationBuilder().email().build(),
+                    callback: ValidationBuilder().required().email().build(),
                   ),
                   const SizedBox(height: 20),
                   AuthInput(
                     hintText: "Enter your password",
                     label: "Password",
                     controller: passwordController,
+                    callback: ValidationBuilder()
+                        .required()
+                        .minLength(6)
+                        .maxLength(50)
+                        .build(),
                     isPasswordField: true,
                   ),
                   const SizedBox(height: 20),
@@ -82,11 +117,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: "Confirm your password",
                     label: "Confirm Password",
                     controller: cPasswordController,
+                    callback: (arg) {
+                      if (passwordController.text != arg) {
+                        return 'Confirm Password not matched';
+                      }
+                      return null;
+                    },
                     isPasswordField: true,
                   ),
                   const SizedBox(height: 50),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: signUp,
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(
                         const Size.fromHeight(40),
