@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:threads_clone/routes/routes.dart';
 import 'package:threads_clone/routes/routes_name.dart';
+import 'package:threads_clone/service/storage_service.dart';
 import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/theme/theme.dart';
 
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Threads Clone',
       theme: theme,
       getPages: Routes.pages,
-      initialRoute: RouteNames.login,
+      initialRoute: StorageService.userSession != null
+          ? RouteNames.home
+          : RouteNames.login,
       defaultTransition: Transition.noTransition,
     );
   }
