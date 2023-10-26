@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
+import 'package:threads_clone/controllers/auth_controller.dart';
 import 'package:threads_clone/routes/routes_name.dart';
 import 'package:threads_clone/widgets/auth_input.dart';
 
@@ -25,14 +26,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController cPasswordController =
       TextEditingController(text: "");
 
+  //***
+  final AuthController controller = Get.put(AuthController());
+
   //?? submit method ->
   void signUp() {
     if (_form.currentState!.validate()) {
-      // controller.register(
-      //   nameController.text,
-      //   emailController.text,
-      //   passwordController.text,
-      // );
+      controller.register(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
+      );
       if (kDebugMode) {
         print('All good');
       }
@@ -91,7 +95,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         .minLength(3)
                         .maxLength(50)
                         .build(),
-                    isPasswordField: true,
                   ),
                   const SizedBox(height: 20),
                   AuthInput(
@@ -126,14 +129,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     isPasswordField: true,
                   ),
                   const SizedBox(height: 50),
-                  ElevatedButton(
-                    onPressed: signUp,
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(
-                        const Size.fromHeight(40),
+                  Obx(
+                    () => ElevatedButton(
+                      onPressed: signUp,
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.all(
+                          const Size.fromHeight(40),
+                        ),
                       ),
+                      child: Text(controller.registerLoading.value
+                          ? 'Processing...'
+                          : 'Submit'),
                     ),
-                    child: const Text('Submit'),
                   ),
                   const SizedBox(height: 40),
                   Text.rich(
