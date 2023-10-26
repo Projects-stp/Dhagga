@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
+import 'package:threads_clone/controllers/auth_controller.dart';
 import 'package:threads_clone/routes/routes_name.dart';
 import 'package:threads_clone/widgets/auth_input.dart';
 
@@ -22,14 +23,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController =
       TextEditingController(text: "");
 
+  //***
+  final AuthController controller = Get.put(AuthController());
+
   //?? submit method ->
   void login() {
     if (_form.currentState!.validate()) {
-      // controller.register(
-      //   nameController.text,
-      //   emailController.text,
-      //   passwordController.text,
-      // );
+      controller.login(
+        emailController.text,
+        passwordController.text,
+      );
       if (kDebugMode) {
         print('All good');
       }
