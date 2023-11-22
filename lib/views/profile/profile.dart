@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:threads_clone/controllers/profile_controller.dart';
+import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/utils/sliver_appbar_delegate.dart';
 import 'package:threads_clone/utils/styles/button_styles.dart';
+import 'package:threads_clone/widgets/image_circle.dart';
 
 import '../../routes/routes_name.dart';
 
@@ -16,6 +18,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   //??
   final ProfileController controller = Get.put(ProfileController());
+  final SupabaseService supabaseService = Get.find<SupabaseService>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,28 +49,36 @@ class _ProfileState extends State<Profile> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Shashwat',
-                                style: TextStyle(
-                                  fontSize: 22.0,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.8,
+                          Obx(
+                            () => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  supabaseService
+                                      .currentUser.value?.userMetadata?["name"],
+                                  style: const TextStyle(
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.8,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: context.width * 0.60,
-                                child: const Text(
-                                  'I am batman',
+                                SizedBox(
+                                  width: context.width * 0.60,
+                                  child: Text(
+                                    supabaseService.currentUser.value
+                                            ?.userMetadata?["description"] ??
+                                        'I am batman',
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          const CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage('assets/avatar.png'),
+                          Obx(
+                            () => CircleImage(
+                              url: supabaseService
+                                  .currentUser.value?.userMetadata?["image"],
+                              radius: 40,
+                            ),
                           ),
                         ],
                       ),

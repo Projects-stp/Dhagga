@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:threads_clone/utils/helper.dart';
 
 class CircleImage extends StatelessWidget {
   final String? url;
@@ -25,13 +26,13 @@ class CircleImage extends StatelessWidget {
           )
         else if (url != null)
           CircleAvatar(
-            backgroundImage: NetworkImage(url!),
+            backgroundImage: NetworkImage(getS3Url(url!)),
             radius: radius,
           )
         else
           CircleAvatar(
             radius: radius,
-            backgroundImage: const AssetImage("assets/images/avatar.png"),
+            backgroundImage: const AssetImage("assets/avatar.png"),
           )
       ],
     );

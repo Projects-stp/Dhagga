@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
+import 'env.dart';
+
 void showSnackBar(String title, String message) {
   Get.snackbar(
     title,
@@ -43,4 +45,9 @@ Future<File> compressImage(File file, String targetPath) async {
   );
 
   return File(result!.path);
+}
+
+//*** Get Supabase s3 bucket url ->
+String getS3Url(String path) {
+  return "${Env.supabaseUrl}/storage/v1/object/public/$path";
 }
