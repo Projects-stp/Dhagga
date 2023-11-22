@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:threads_clone/controllers/profile_controller.dart';
 import 'package:threads_clone/utils/sliver_appbar_delegate.dart';
 import 'package:threads_clone/utils/styles/button_styles.dart';
 
@@ -13,6 +14,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  //??
+  final ProfileController controller = Get.put(ProfileController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
