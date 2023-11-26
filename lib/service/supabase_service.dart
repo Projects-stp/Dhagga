@@ -19,13 +19,15 @@ class SupabaseService extends GetxService {
 
   // *  listen auth changes
   void listenAuthChange() {
-    client.auth.onAuthStateChange.listen((data) {
-      final AuthChangeEvent event = data.event;
-      if (event == AuthChangeEvent.userUpdated) {
-        currentUser.value = data.session?.user;
-      } else if (event == AuthChangeEvent.signedIn) {
-        currentUser.value = data.session?.user;
-      }
-    });
+    client.auth.onAuthStateChange.listen(
+      (data) {
+        final AuthChangeEvent event = data.event;
+        if (event == AuthChangeEvent.userUpdated) {
+          currentUser.value = data.session?.user;
+        } else if (event == AuthChangeEvent.signedIn) {
+          currentUser.value = data.session?.user;
+        }
+      },
+    );
   }
 }

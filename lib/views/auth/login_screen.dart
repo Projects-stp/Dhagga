@@ -24,12 +24,12 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController(text: "");
 
   //***
-  final AuthController controller = Get.put(AuthController());
+  final AuthController authController = Get.put(AuthController());
 
   //?? submit method ->
   void login() {
     if (_form.currentState!.validate()) {
-      controller.login(
+      authController.login(
         emailController.text,
         passwordController.text,
       );
@@ -43,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-
     super.dispose();
   }
 
