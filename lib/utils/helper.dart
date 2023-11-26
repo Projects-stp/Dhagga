@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:threads_clone/widgets/confirm_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 import 'env.dart';
@@ -50,4 +51,15 @@ Future<File> compressImage(File file, String targetPath) async {
 //*** Get Supabase s3 bucket url ->
 String getS3Url(String path) {
   return "${Env.supabaseUrl}/storage/v1/object/public/$path";
+}
+
+//?? confirm dialog box ->
+void confirmDialog(String title, String text, VoidCallback callBack) {
+  Get.dialog(
+    ConfirmDialog(
+      title: title,
+      text: text,
+      callback: callBack,
+    ),
+  );
 }
