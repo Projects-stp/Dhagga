@@ -4,6 +4,7 @@ import 'package:threads_clone/controllers/thread_controller.dart';
 import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/widgets/add_thread_appbar.dart';
 import 'package:threads_clone/widgets/image_circle.dart';
+import 'package:threads_clone/widgets/thread_image_preview.dart';
 
 class AddThreads extends StatelessWidget {
   AddThreads({super.key});
@@ -58,8 +59,18 @@ class AddThreads extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => controller.pickImage(),
                           child: const Icon(Icons.attach_file),
+                        ),
+
+                        //?? to see image
+                        Obx(
+                          () => Column(
+                            children: [
+                              if (controller.image.value != null)
+                                ThreadImagePreview(),
+                            ],
+                          ),
                         ),
                       ],
                     ),
