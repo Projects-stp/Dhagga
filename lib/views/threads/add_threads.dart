@@ -20,7 +20,7 @@ class AddThreads extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const AddThreadAppBar(),
+              AddThreadAppBar(),
               const SizedBox(height: 10.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
