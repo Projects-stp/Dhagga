@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:threads_clone/controllers/thread_controller.dart';
+import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/widgets/add_thread_appbar.dart';
+import 'package:threads_clone/widgets/image_circle.dart';
 
-class AddThreads extends StatefulWidget {
-  const AddThreads({super.key});
+class AddThreads extends StatelessWidget {
+  AddThreads({super.key});
 
-  @override
-  State<AddThreads> createState() => _AddThreadsState();
-}
+  //??
+  final SupabaseService supabaseService = Get.find<SupabaseService>();
+  final ThreadController controller = Get.put(ThreadController());
 
-class _AddThreadsState extends State<AddThreads> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +19,53 @@ class _AddThreadsState extends State<AddThreads> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              AddThreadAppBar(),
+              const AddThreadAppBar(),
+              const SizedBox(height: 10.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(
+                    () => CircleImage(
+                      url: supabaseService
+                          .currentUser.value!.userMetadata?["image"],
+                    ),
+                  ),
+                  const SizedBox(width: 10.0),
+                  SizedBox(
+                    width: context.width * 0.80,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => Text(
+                            supabaseService
+                                .currentUser.value!.userMetadata?["name"],
+                          ),
+                        ),
+                        TextField(
+                          autofocus: true,
+                          controller: controller.textEditingController,
+                          onChanged: (value) =>
+                              controller.content.value = value,
+                          style: const TextStyle(fontSize: 15.0),
+                          maxLines: 10,
+                          minLines: 1,
+                          maxLength: 1000,
+                          decoration: const InputDecoration(
+                            hintText: 'type a thread',
+                            border: InputBorder.none,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Icon(Icons.attach_file),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
