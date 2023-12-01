@@ -1,4 +1,5 @@
 import 'package:get/route_manager.dart';
+import 'package:threads_clone/replies/add_reply.dart';
 import 'package:threads_clone/routes/routes_name.dart';
 import 'package:threads_clone/views/auth/login_screen.dart';
 import 'package:threads_clone/views/auth/register.dart';
@@ -29,8 +30,13 @@ class Routes {
     ),
     GetPage(
       name: RouteNames.setting,
-      page: () =>  Setting(),
+      page: () => Setting(),
       transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: RouteNames.addComment,
+      page: () => AddReply(),
+      transition: Transition.downToUp,
     ),
   ];
 }

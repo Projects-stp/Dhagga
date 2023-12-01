@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:threads_clone/routes/routes_name.dart';
 
 import '../models/post_model.dart';
 
@@ -21,7 +23,9 @@ class PostCardBottomBar extends StatelessWidget {
               icon: const Icon(Icons.favorite_outline),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(RouteNames.addComment, arguments: post);
+              },
               icon: const Icon(Icons.chat_bubble_outline),
             ),
             IconButton(
@@ -36,7 +40,7 @@ class PostCardBottomBar extends StatelessWidget {
             const SizedBox(width: 12.0),
             Text("${post.likeCount} likes"),
           ],
-        )
+        ),
       ],
     );
   }
