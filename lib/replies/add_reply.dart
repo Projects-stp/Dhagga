@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:threads_clone/controllers/reply_controller.dart';
 import 'package:threads_clone/models/post_model.dart';
+import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/widgets/image_circle.dart';
 import 'package:threads_clone/widgets/post_card_image.dart';
 
@@ -10,6 +11,7 @@ class AddReply extends StatelessWidget {
 
   final PostModel post = Get.arguments;
   final ReplyController controller = Get.put(ReplyController());
+  final SupabaseService supabaseService = Get.find<SupabaseService>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,32 @@ class AddReply extends StatelessWidget {
           "Reply",
         ),
         actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text('Comment'),
+          Obx(
+            () => TextButton(
+              onPressed: () {
+                if (controller.reply.isNotEmpty) {
+                  controller.addReply(
+                    supabaseService.currentUser.value!.id,
+                    post.id!,
+                    post.userId!,
+                  );
+                }
+              },
+              child: controller.loading.value
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(),
+                    )
+                  : Text(
+                      'Comment',
+                      style: TextStyle(
+                        fontWeight: controller.reply.value.isNotEmpty
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+            ),
           ),
         ],
       ),
