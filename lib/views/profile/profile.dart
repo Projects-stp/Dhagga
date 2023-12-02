@@ -5,8 +5,11 @@ import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/utils/sliver_appbar_delegate.dart';
 import 'package:threads_clone/utils/styles/button_styles.dart';
 import 'package:threads_clone/widgets/image_circle.dart';
+import 'package:threads_clone/widgets/post_card.dart';
 
 import '../../routes/routes_name.dart';
+import '../../widgets/comment_card.dart';
+import '../../widgets/loading.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -19,6 +22,15 @@ class _ProfileState extends State<Profile> {
   //??
   final ProfileController controller = Get.put(ProfileController());
   final SupabaseService supabaseService = Get.find<SupabaseService>();
+
+  @override
+  void initState() {
+    if (supabaseService.currentUser.value?.id != null) {
+      controller.fetchUserThreads(supabaseService.currentUser.value!.id);
+      controller.fetchReplies(supabaseService.currentUser.value!.id);
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +136,59 @@ class _ProfileState extends State<Profile> {
               ),
             ];
           },
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              Text('I am threads'),
-              Text('I am replies'),
+              Obx(
+                () => SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      if (controller.postLoading.value)
+                        const Loading()
+                      else if (controller.posts.isNotEmpty)
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: controller.posts.length,
+                          itemBuilder: (context, index) => PostCard(
+                            post: controller.posts[index],
+                          ),
+                        )
+                      else
+                        const Center(
+                          child: Text("No Post found"),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              Obx(
+                () => SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10.0),
+                        if (controller.replyLoading.value)
+                          const Loading()
+                        else if (controller.replies.isNotEmpty)
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: controller.replies.length,
+                            itemBuilder: (context, index) => CommentCard(
+                              reply: controller.replies[index],
+                            ),
+                          )
+                        else
+                          const Center(
+                            child: Text("No reply found"),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
