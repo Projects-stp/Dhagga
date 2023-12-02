@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threads_clone/models/post_model.dart';
+import 'package:threads_clone/utils/helper.dart';
 
 class PostTopBar extends StatelessWidget {
   final PostModel post;
@@ -21,11 +22,15 @@ class PostTopBar extends StatelessWidget {
             letterSpacing: 0.5,
           ),
         ),
-        const Row(
+        Row(
           children: [
-            Text('Hi hello'),
-            SizedBox(width: 10.0),
-            Icon(Icons.more_horiz),
+            Text(
+              formatDateFromNow(
+                post.createdAt!,
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            const Icon(Icons.more_horiz),
           ],
         ),
       ],
