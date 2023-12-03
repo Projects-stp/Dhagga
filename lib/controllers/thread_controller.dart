@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:threads_clone/models/reply_model.dart';
 import 'package:threads_clone/service/navigation_service.dart';
 import 'package:threads_clone/service/supabase_service.dart';
 import 'package:threads_clone/utils/env.dart';
 import 'package:threads_clone/utils/helper.dart';
 import 'package:uuid/uuid.dart';
+
+import '../models/post_model.dart';
 
 class ThreadController extends GetxController {
   final TextEditingController textEditingController =
@@ -17,6 +20,12 @@ class ThreadController extends GetxController {
   var loading = false.obs;
 
   Rx<File?> image = Rx<File?>(null);
+
+  var showThreadLoading = false.obs;
+  Rx<PostModel> post = Rx<PostModel>(PostModel());
+
+  var replyLoading = false.obs;
+  RxList<ReplyModel> replies = RxList<ReplyModel>();
 
   //??
   void pickImage() async {
@@ -56,6 +65,49 @@ class ThreadController extends GetxController {
       showSnackBar("Error", error.message);
     } catch (error) {
       loading.value = false;
+      showSnackBar("Error", "Something went wrong!");
+    }
+  }
+
+  //??
+  void show(int postId) async {
+    try {
+      post.value = PostModel();
+      replies.value = [];
+      showThreadLoading.value = true;
+      final data = await SupabaseService.client.from("posts").select('''
+    id ,content , image ,created_at ,comment_count , like_count,user_id,
+    user:user_id (email , metadata)
+''').eq("id", postId).single();
+
+      showThreadLoading.value = false;
+      post.value = PostModel.fromJson(data);
+
+      //*** Load post comments
+      fetchPostReplies(postId);
+    } catch (e) {
+      showThreadLoading.value = false;
+      showSnackBar("Error", "Something went wrong!");
+    }
+  }
+
+  //??
+  void fetchPostReplies(int postId) async {
+    try {
+      replyLoading.value = true;
+      final List<dynamic> data =
+          await SupabaseService.client.from("comments").select('''
+    id ,reply ,created_at ,user_id,
+    user:user_id (email , metadata)
+''').eq("post_id", postId);
+
+      replyLoading.value = false;
+
+      if (data.isNotEmpty) {
+        replies.value = [for (var item in data) ReplyModel.fromJson(item)];
+      }
+    } catch (e) {
+      replyLoading.value = false;
       showSnackBar("Error", "Something went wrong!");
     }
   }

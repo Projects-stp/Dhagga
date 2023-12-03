@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:threads_clone/models/post_model.dart';
+import 'package:threads_clone/routes/routes_name.dart';
 import 'package:threads_clone/widgets/post_card_bottom_bar.dart';
 import 'package:threads_clone/widgets/post_card_image.dart';
 import 'package:threads_clone/widgets/post_top_bar.dart';
@@ -39,7 +40,12 @@ class PostCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     PostTopBar(post: post),
-                    Text(post.content!),
+                    GestureDetector(
+                      onTap: () => {
+                        Get.toNamed(RouteNames.showThread, arguments: post.id),
+                      },
+                      child: Text(post.content!),
+                    ),
                     const SizedBox(height: 10.0),
                     if (post.image != null) PostCardImage(url: post.image!),
                     PostCardBottomBar(post: post),
