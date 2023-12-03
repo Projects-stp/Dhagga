@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:threads_clone/models/user_model.dart';
+import 'package:threads_clone/routes/routes_name.dart';
 import 'package:threads_clone/utils/styles/button_styles.dart';
 
 import '../utils/helper.dart';
@@ -23,7 +25,7 @@ class UserTile extends StatelessWidget {
       title: Text(user.metadata!.name!),
       titleAlignment: ListTileTitleAlignment.top,
       trailing: OutlinedButton(
-        onPressed: () {},
+        onPressed: () => Get.toNamed(RouteNames.showUser, arguments: user.id),
         style: customOutlineStyle(),
         child: const Text("View profile"),
       ),
