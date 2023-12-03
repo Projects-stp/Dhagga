@@ -6,6 +6,7 @@ import 'package:threads_clone/views/auth/register.dart';
 import 'package:threads_clone/views/home_screen.dart';
 import 'package:threads_clone/views/profile/edit_profile.dart';
 import 'package:threads_clone/views/settings/settings.dart';
+import 'package:threads_clone/views/threads/show_image.dart';
 import 'package:threads_clone/views/threads/show_threads.dart';
 
 class Routes {
@@ -43,6 +44,11 @@ class Routes {
       name: RouteNames.showThread,
       page: () => const ShowThread(),
       transition: Transition.leftToRight,
+    ),
+    GetPage(
+      name: RouteNames.showImage,
+      page: () => ShowImage(),
+      transition: Transition.fadeIn,
     ),
   ];
 }

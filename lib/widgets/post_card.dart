@@ -47,7 +47,16 @@ class PostCard extends StatelessWidget {
                       child: Text(post.content!),
                     ),
                     const SizedBox(height: 10.0),
-                    if (post.image != null) PostCardImage(url: post.image!),
+                    if (post.image != null)
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            RouteNames.showImage,
+                            arguments: post.image!,
+                          );
+                        },
+                        child: PostCardImage(url: post.image!),
+                      ),
                     PostCardBottomBar(post: post),
                   ],
                 ),
