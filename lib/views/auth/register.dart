@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontSize: 25,
                           ),
                         ),
-                        Text("Welcome to Threads,"),
+                        Text("Welcome to Dhaagga,"),
                       ],
                     ),
                   ),
