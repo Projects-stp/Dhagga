@@ -8,6 +8,7 @@ import 'package:threads_clone/utils/env.dart';
 import 'package:threads_clone/utils/helper.dart';
 
 import '../models/post_model.dart';
+import '../models/user_model.dart';
 
 class ProfileController extends GetxController {
   var loading = false.obs;
@@ -18,6 +19,9 @@ class ProfileController extends GetxController {
 
   RxList<ReplyModel> replies = RxList<ReplyModel>();
   var replyLoading = false.obs;
+
+  var userLoading = false.obs;
+  Rx<UserModel> user = Rx<UserModel>(UserModel());
 
   //?? update profile method ->
   Future<void> updateProfile(String userId, String description) async {
@@ -105,6 +109,27 @@ class ProfileController extends GetxController {
       }
     } catch (e) {
       replyLoading.value = false;
+      showSnackBar('Error', 'Something went wrong');
+    }
+  }
+
+  //??
+  void fetchUser(String userId) async {
+    try {
+      userLoading.value = true;
+      final data = await SupabaseService.client
+          .from("users")
+          .select("*")
+          .eq("id", userId)
+          .single();
+      userLoading.value = false;
+      user.value = UserModel.fromJson(data);
+
+      //!! Fetch posts and comments
+      fetchUserThreads(userId);
+      fetchReplies(userId);
+    } catch (e) {
+      userLoading.value = false;
       showSnackBar('Error', 'Something went wrong');
     }
   }

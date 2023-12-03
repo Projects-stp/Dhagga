@@ -8,5 +8,5 @@ class RouteNames {
   static const String addComment = "/addComment";
   static const String showThread = "/showThread";
   static const String showImage = "/showImage";
-  static const String showProfile = "/showProfile";
+  static const String showUser = "/showUser";
 }
